@@ -1,0 +1,18 @@
+{{#each products }}
+<div class="row gap-5">
+  {{#each this}}
+
+  <div class="card" style="width: 18rem;">
+  <img  src="{{this.imagePath}}" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{this.title}}</h5>
+    <p class="card-text">{{this.description}}</p>
+    <div class="price-play"><p class="price">Rs.{{this.price}}</p> <a href="#" class="btn btn-success">Buy</a></div>
+  </div>
+</div>
+{{/each}}
+</div>
+{{/each}}
+
+
+

@@ -1,0 +1,23 @@
+.card img {
+  max-height: 250px;
+}
+
+.card h5 {
+  font-weight: bolder;
+}
+.card p {
+  color: grey;
+}
+.card .price-play {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+.card .price {
+  color: black;
+  font-weight: bolder;
+}
+.card {
+  margin: 5px;
+}

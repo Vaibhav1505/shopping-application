@@ -1,0 +1,19 @@
+<div>
+  <span>Please wait while we redirect you to Profile...</span>
+  {{!-- <h1>{{email}}</h1> --}}
+  <input id="token" type="text" value={{token}}>
+  {{!-- <h1>Toekn:{{token}}</h1> --}}
+  {{!-- <h2>{{username}}</h2> --}}
+</div>
+
+<script>
+localStorage.setItem('token',document.getElementById('token').value)
+</script>
+
+<form id="anyform" action="/user/profile" method="get">
+
+</form>
+
+<script>
+  document.getElementById('anyform').submit()
+</script>
