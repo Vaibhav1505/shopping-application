@@ -1,3 +1,4 @@
+const Product = require("../models/product.model");
 exports.create_products = function(req, res, next) {
     const newProduct = new Product({
         imagePath: req.body.imagePath,
