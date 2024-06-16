@@ -40,6 +40,11 @@ app.engine(
             allowProtoPropertiesByDefault: true,
             allowedProtoMethodsByDefault: true,
         },
+        helper: {
+            cartItemCount: function() {
+                return Products.length;
+            },
+        },
     })
 );
 app.set("view engine", ".hbs");
