@@ -10,7 +10,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    userImage: {
+        type: String,
+        required: true,
+    },
     username: {
+        type: String,
+        required: true,
+    },
+    fullname: {
         type: String,
         required: true,
     },
@@ -21,15 +29,14 @@ const userSchema = new mongoose.Schema({
     products: [{
         productId: {
             type: String,
-            required: true
+            required: true,
         },
         quantity: {
             type: Number,
             default: 1,
-            required: true
-        }
-
-    }]
+            required: true,
+        },
+    }, ],
 });
 
 userSchema.method.encryptedPassword = function(password) {

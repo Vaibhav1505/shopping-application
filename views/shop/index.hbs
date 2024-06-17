@@ -1,33 +1,26 @@
-
 <div>
- <h5> {{message}} </h5>
+  <h5> {{message}} </h5>
 </div>
-{{#each products }}
-<div class="row gap-5">
-  {{#each this}}
+{{#each products}}
+  <div class="row gap-5">
+    {{#each this}}
 
-  <div class="card" style="width: 18rem;">
-  <img  src="{{this.imagePath}}" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">{{this.title}}</h5>
-    <p class="card-text">{{this.description}}</p>
-    <div class="price-play"><p class="price">Rs.{{this.price}}</p>
+      <div class="card item-card" style="width: 18rem;">
+        <img src="{{this.imagePath}}" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{this.title}}</h5>
+          <p class="card-text">{{this.description}}</p>
+          <div class="price-play"><p class="price">Rs.{{this.price}}</p>
 
-    <form method="post" action="/add_to_cart">
-    <input type="hidden" value="{{this._id}}" name="productId"/>
-    <input type="hidden" value="{{this.title}}" name="productName"/>
-       <button type="submit" class="btn btn-success">Add to Cart</button>
-       
-    </form>
-    </div>
+            <form method="post" action="/add_to_cart">
+              <input type="hidden" value="{{this._id}}" name="productId" />
+              <input type="hidden" value="{{this.title}}" name="productName" />
+              <button type="submit" class="btn btn-success">Add to Cart</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    {{/each}}
   </div>
-</div>
 {{/each}}
-</div>
-{{/each}}
-
-
-
-
-
-

@@ -4,27 +4,64 @@
 {{/each}}
 {{/if}} --}}
 
-<form action="/user/signup" method="post">
-<div class="mb-3">
+<form action="/user/signup" method="post" enctype="multipart/form-data">
+  <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-    
+    <input
+      type="email"
+      class="form-control"
+      id="exampleInputEmail1"
+      aria-describedby="emailHelp"
+      name="email"
+    />
+
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+    <input
+      type="password"
+      class="form-control"
+      id="exampleInputPassword1"
+      name="password"
+    />
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Username</label>
-    <input type="text" class="form-control" id="exampleInputPassword1" name="username">
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputPassword1"
+      name="username"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Fullname</label>
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputPassword1"
+      name="fullname"
+    />
   </div>
   <div class="mb-3">
     <label for="exampleInputPassword1" class="form-label">Age</label>
-    <input type="text" class="form-control" id="exampleInputPassword1" name="age">
+    <input
+      type="text"
+      class="form-control"
+      id="exampleInputPassword1"
+      name="age"
+    />
   </div>
-  
- 
-  <button type="submit" class="btn btn-primary">Sign Up</button>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Profile Photo</label>
+    <input
+      type="file"
+      class="form-control"
+      id="exampleInputPassword1"
+      name="userImage"
+    />
+  </div>
 
+  <button type="submit" class="btn btn-primary">Sign Up</button>
 
 </form>

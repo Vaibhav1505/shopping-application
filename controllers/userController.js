@@ -2,49 +2,75 @@ const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Product = require("../models/product.model");
+const multer = require("multer");
 
-exports.user_signup = function(req, res, next) {
-    console.log(req.body);
-    User.findOne({ email: req.body.email })
+//USED FOR UPLOADING IMAGE
+//HERE WE CONFIGURE HOW AND WHERE IMAGE WILL BE STORED
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, "./public/images");
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname);
+    },
+});
 
-    .then((user) => {
-            if (user) {
-                console.log("User Already Exist");
-            } else {
-                bcrypt.hash(req.body.password, 5, (err, hash) => {
-                    if (err) {
-                        console.log(err);
-                        console.log("Error in Password Hashing");
-                    } else {
-                        const newUser = new User({
-                            email: req.body.email,
-                            password: hash,
-                            username: req.body.username,
-                            age: req.body.age,
-                        });
-                        newUser
-                            .save()
-                            .then((validatedUser) => {
-                                // res.status(200).json({
-                                //     message: "Validated Used",
-                                //     user: validatedUser,
-                                // });
-                                res.redirect("/user/signin");
-                            })
-                            .catch((err) => {
-                                res.render("error");
-                                res.json({
-                                    error: err,
-                                });
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5,
+    },
+});
+
+exports.user_signup = (req, res, next) => {
+    upload.single("userImage")(req, res, function(err) {
+        if (err) {
+            return res.render("error", { error: err });
+        }
+        console.log(req.body);
+        User.findOne({ email: req.body.email })
+
+        .then((user) => {
+                if (user) {
+                    console.log("User Already Exist");
+                } else {
+                    bcrypt.hash(req.body.password, 5, (err, hash) => {
+                        if (err) {
+                            console.log(err);
+                            console.log("Error in Password Hashing");
+                        } else {
+                            const newUser = new User({
+                                email: req.body.email,
+                                password: hash,
+                                username: req.body.username,
+                                fullname: req.body.fullname,
+                                age: req.body.age,
+                                userImage: req.file.destination + "/" + req.file.filename,
                             });
-                    }
-                });
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-            res.redirect("error");
-        });
+                            newUser
+                                .save()
+                                .then((validatedUser) => {
+                                    // res.status(200).json({
+                                    //     message: "Validated Used",
+                                    //     user: validatedUser,
+                                    // });
+                                    res.redirect("/user/signin");
+                                })
+                                .catch((err) => {
+                                    res.render("error");
+                                    res.json({
+                                        error: err,
+                                    });
+                                });
+                        }
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                res.redirect("error");
+            });
+    });
 };
 
 exports.user_signin = function(req, res, next) {
