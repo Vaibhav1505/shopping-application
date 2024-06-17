@@ -18,3 +18,20 @@ exports.create_products = function(req, res, next) {
             res.render("error", { error: err });
         });
 };
+
+exports.get_product_detail = function(req, res, next) {
+    Product.aggregate([{
+            $match: {
+                title: req.payload.title,
+            },
+        },
+        {
+            $unwind: "$products",
+        },
+        {
+            $replaceRoot: { newroot: "$products" },
+        }, {
+
+        },
+    ]);
+};

@@ -66,7 +66,7 @@ exports.user_signin = function(req, res, next) {
                             email: req.body.email,
                         },
                         process.env.jwt_key, {
-                            expiresIn: "1h",
+                            expiresIn: "1d",
                         }
                     );
                     console.log("Token: " + verificationToken);
@@ -100,11 +100,7 @@ exports.add_to_cart = async function(req, res, next) {
 
     /** Getting all products */
     const products = await Product.find({});
-    const productChunks = [];
-    const chunkSize = 3;
-    for (let i = 0; i < products.length; i += chunkSize) {
-        productChunks.push(products.slice(i, i + chunkSize));
-    }
+
     User.findOneAndUpdate({ email }, {
             $addToSet: {
                 products: {
@@ -116,11 +112,102 @@ exports.add_to_cart = async function(req, res, next) {
             new: true,
         })
         .then((user) => {
-            res.redirect('/?message=' +
-                productName + 'added successfully& type = success ');
+            res.redirect(
+                "/?message=" + productName + "added successfully& type = success "
+            );
         })
         .catch((e) => {
             console.log(e.message);
-            res.redirect('/?message=Could not add product&type=error');
+            res.redirect("/?message=Could not add product&type=error");
+        });
+};
+
+exports.get_all_cart_items = function(req, res, next) {
+    User.aggregate([{
+                $match: {
+                    email: req.payload.email,
+                },
+            },
+            {
+                $unwind: "$products",
+            },
+            {
+                $replaceRoot: { newRoot: "$products" },
+            },
+            {
+                $project: {
+                    productId: {
+                        $toObjectId: "$productId",
+                    },
+                    quantity: 1,
+                },
+            },
+            {
+                $lookup: {
+                    from: "products",
+                    localField: "productId",
+                    foreignField: "_id",
+                    as: "productInfo",
+                },
+            },
+            {
+                $unwind: "$productInfo",
+            },
+            {
+                $project: {
+                    imagePath: "$productInfo.imagePath",
+                    title: "$productInfo.title",
+                    description: "$productInfo.description",
+                    price: "$productInfo.price",
+                    quantity: 1,
+                    productId: "$productInfo._id",
+                },
+            },
+        ])
+        .then((products) => {
+            res.render("user/cart", { products });
+        })
+        .catch((err) => {
+            console.log(err.message);
+            res.render("error");
+        });
+};
+
+exports.update_quantity = function(req, res, next) {
+    const _id = req.query.productId;
+    // const quantity = req.query.quantity;
+    User.findOne({ email: req.payload.email })
+        .then(async(user) => {
+            for (let i = 0; i < user.products.length; i++) {
+                console.log("Target ID", _id);
+                console.log("Candidate Id", user.products[i].productId);
+                if (user.products[i].productId == _id) {
+                    if (req.query.type == "increase") {
+                        user.products[i].quantity = user.products[i].quantity + 1;
+                    } else {
+                        user.products[i].quantity = user.products[i].quantity - 1;
+                    }
+                    console.log("QUNA TITY", user.products[i].quantity);
+                    break;
+                }
+            }
+            await user.save();
+            res.redirect("/cart");
+        })
+        .catch((err) => {
+            console.log(err.message);
+            res.render("error", { error: err });
+        });
+};
+
+exports.remove_item = (req, res, next) => {
+    const productId = req.query.productId;
+    User.findOneAndUpdate({ email: req.payload.email }, { $pull: { products: { productId } } })
+        .then((user) => {
+            res.redirect("/cart");
+        })
+        .catch((err) => {
+            console.log(err.message);
+            res.render("error", { error: err });
         });
 };
