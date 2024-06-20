@@ -8,7 +8,8 @@ const bcrypt = require("bcrypt");
 require("dotenv").config();
 const userController = require("../controllers/userController");
 const productController = require("../controllers/productController");
-
+const orderController = require("../controllers/orderController");
+const Order = require("../models/order.model");
 const checkAuth = require("../middleware/checkAuth");
 
 /* GET home page. */
@@ -22,6 +23,8 @@ router.get("/", checkAuth, async function(req, res, next) {
     }
 
     // Fetching products to show on page
+    //USING REGULAR EXPRESSION FOR SEARCHING ITEM FROM SEARCH BAR
+    //HERE 'OPTION' IS PROVIDED BY MONGO DB SO WE CAN EXECUTE MULTIPLE OPERATION
     const products = await Product.find({
         title: { $regex: keyword, $options: "i" },
     });
@@ -72,7 +75,11 @@ router.get("/user/error", function(req, res, next) {
     res.render("error");
 });
 
-router.post("/products/addProducts", productController.create_products);
+router.post(
+    "/products/addProducts",
+    checkAuth,
+    productController.create_products
+);
 
 router.get("/products/addProducts", function(req, res, next) {
     res.render("shop/addProduct");
@@ -85,5 +92,26 @@ router.post("/add_to_cart", checkAuth, userController.add_to_cart);
 router.get("/cart", checkAuth, userController.get_all_cart_items);
 
 router.get("/cart/removeItem", checkAuth, userController.remove_item);
+
+router.get(
+    "/products/:productId",
+
+    productController.get_product_detail
+);
+
+router.get("/orders", checkAuth, orderController.get_orders);
+
+router.post("/orders/create", checkAuth, orderController.create_order);
+
+router.get(
+    "/orders/details/:orderId",
+    checkAuth,
+    orderController.get_order_details
+);
+
+router.get("/chat/:orderId", checkAuth, orderController.chat);
+
+//router.get('chat/details', orderController.get_chat_deatils)
+
 
 module.exports = router;

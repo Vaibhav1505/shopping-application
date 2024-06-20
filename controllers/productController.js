@@ -20,18 +20,14 @@ exports.create_products = function(req, res, next) {
 };
 
 exports.get_product_detail = function(req, res, next) {
-    Product.aggregate([{
-            $match: {
-                title: req.payload.title,
-            },
-        },
-        {
-            $unwind: "$products",
-        },
-        {
-            $replaceRoot: { newroot: "$products" },
-        }, {
-
-        },
-    ]);
+    Product.findOne({ _id: req.params.productId })
+        .then((product) => {
+            res.render("product/productDetails", product);
+        })
+        .catch((e) => {
+            console.log(
+                "There is an Error in fetching product detials using product ID"
+            );
+            res.render("error", { error: e });
+        });
 };

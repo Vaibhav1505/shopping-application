@@ -1,0 +1,64 @@
+<h1>Having a query?</h1>
+<h5>Chat with us</h5>
+<input name="sender" id="sender" value="{{sender}}" type="hidden" />
+<input name="orderId" id="orderId" value="{{orderId}}" type="hidden" />
+{{!-- <div style="display: flex;  margin:30px 0">
+
+  <button>Set</button>
+</div> --}}
+
+
+<div id="list">
+  {{#each chats}}
+  <div><b>{{sender}}</b> : {{content}} <script>document.write(new Date({{createdAt}}).toISOString())</script></div>
+  {{/each}}
+</div>
+<ul id="Messages"></ul>
+
+
+<div style="display:flex">
+  
+  <input style="" type="text" id="chatText" name="content" placeholder="Enter Your text Here" />
+  <button id="send">Send</button>
+</div>
+
+
+<script>
+
+ 
+
+  let sentMessage = document.getElementById("chatText");
+  let list = document.getElementById('list');
+  let form = document.getElementById('myForm');
+  // let username = document.getElementById('username').value
+
+
+
+
+
+
+
+
+
+  document.getElementById('send').addEventListener('click', (event) => {
+    event.preventDefault();
+    socket.emit('queryRoom',
+    {
+      orderId:document.getElementById('orderId').value,
+      sender:document.getElementById('sender').value,
+      content:sentMessage.value})
+
+    sentMessage.value = '';
+    //io.emit("queryRoom", msg)
+  })
+
+  socket.on('queryRoom', (args) => {
+   
+    
+    const {sender,content,orderId} = args;
+    let div = document.createElement('div');
+    div.innerHTML = `<b>${sender}r</b>` +": "+content;
+
+    list.append(div);
+  })
+</script>

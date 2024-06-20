@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     },
     products: [{
         productId: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
         quantity: {

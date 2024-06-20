@@ -4,7 +4,23 @@
   .count{ display: flex; gap: 5px; }
 </style>
 
+<form style="padding:16px" action="/orders/create" method="post">
+
+  <div class="form-group">
+
+    <input
+      placeholder="Enter Address"
+      id="address"
+      type="text"
+      class="form-control-file"
+      name="address"
+    />
+    <button style="margin: 15px 0;" type="submit" class="btn btn-success">Place
+      Order</button>
+  </div>
+</form>
 {{#each products}}
+
   <div class="col item-container">
     <div class="card">
       <img src="{{imagePath}}" alt="..." class="w-100" />

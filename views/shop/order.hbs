@@ -1,0 +1,27 @@
+<div class="d-flex flex-column gap-4">
+  {{#each orders}}
+
+    <a href="/orders/details/{{_id}}">
+      <div class="border">
+        <div
+          class="bg-light"
+          style="display:flex;justify-content:space-between;padding: 8px;"
+        >
+          <div>
+            <span>Order Id: {{_id}}</span>
+          </div>
+
+          <div>
+            <span>Created At: {{createdAt}}</span>
+          </div>
+        </div>
+        <div style="gap:16px;padding:8px" class="d-flex flex-column gap-4">
+          {{#each items}}
+            <div><span>Product: {{title}} || Qty : {{quantity}}</span></div>
+          {{/each}}
+        </div>
+      </div>
+    </a>
+
+  {{/each}}
+</div>

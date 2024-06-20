@@ -1,0 +1,28 @@
+<h1>Order Details Page</h1>
+
+<script>
+  let totalPrice=0; for(let i=0;i<products.length;i++){ totalPrice+=
+  products[i].price }
+</script>
+
+<div style="flex-direction:column;gap:8px">
+  <div><b>Order Id</b> : {{orderId}}</div>
+  <div><b>Shipping Address</b> : {{address}}</div>
+  {{#each products}}
+    <div style="margin:20px 0"><ul><li><b>Product:</b>
+          {{title}}
+          ||
+          <b> Qty :</b>
+          {{quantity}}</li></ul></div>
+  {{/each}}
+  <div style="display: flex; align-items:center"><h5>Total Price : </h5>
+    <h3 style="color:green">{{totalPrice}}</h3></div>
+
+</div>
+<form action="/chat/{{orderId}}" method="get">
+  <button
+    type="submit"
+    style="margin:15px 0px; width:25%"
+    class="btn btn-success"
+  >Having a Query?</button>
+</form>

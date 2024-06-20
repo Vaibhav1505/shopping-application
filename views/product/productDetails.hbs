@@ -1,0 +1,26 @@
+<style>
+  .container{
+    display: flex;
+    width:50%;
+    border: 1px solid grey;
+    border-radius:5px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  img{
+    width:180px;
+  }
+</style>
+
+<div class="container">
+  <div class="productImage">
+    <img src="{{imagePath}}" alt="">
+  </div>
+  <div class="productDetails">
+      <h5 class="card-title">{{title}}</h5>
+          <p class="card-text">{{description}}</p>
+          <div class="price-play"><p class="price">Rs.{{price}}</p>
+          <button class="btn btn-success"> Buy</button>
+  </div>
+</div>
