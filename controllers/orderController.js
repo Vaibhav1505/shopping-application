@@ -16,9 +16,9 @@ exports.create_order = async function(req, res, next) {
         .save()
         .then((order) => {
             console.log("Order Created..Go and check in Order Section");
-            res.render("shop/order", {
-                order,
-            });
+            res.render("shop/order",
+                order
+            );
         })
         .catch((e) => {
             console.log("There is an Error in Creating the Order", e);

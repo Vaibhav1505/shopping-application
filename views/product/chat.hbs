@@ -10,14 +10,16 @@
 
 <div id="list">
   {{#each chats}}
-  <div><b>{{sender}}</b> : {{content}} <script>document.write(new Date({{createdAt}}).toISOString())</script></div>
+  <div><b>{{sender}}</b> : {{content}}
+    <script>document.write(new Date({{ createdAt }}).toISOString())</script>
+  </div>
   {{/each}}
 </div>
 <ul id="Messages"></ul>
 
 
 <div style="display:flex">
-  
+
   <input style="" type="text" id="chatText" name="content" placeholder="Enter Your text Here" />
   <button id="send">Send</button>
 </div>
@@ -25,14 +27,17 @@
 
 <script>
 
- 
+
 
   let sentMessage = document.getElementById("chatText");
   let list = document.getElementById('list');
   let form = document.getElementById('myForm');
   // let username = document.getElementById('username').value
 
-
+  const date = new Date();
+  const hour = date.getHours();
+  const min = date.getMinutes()
+  const currentTime = `${hour}:${min}`
 
 
 
@@ -43,21 +48,22 @@
   document.getElementById('send').addEventListener('click', (event) => {
     event.preventDefault();
     socket.emit('queryRoom',
-    {
-      orderId:document.getElementById('orderId').value,
-      sender:document.getElementById('sender').value,
-      content:sentMessage.value})
+      {
+        orderId: document.getElementById('orderId').value,
+        sender: document.getElementById('sender').value,
+        content: sentMessage.value
+      })
 
     sentMessage.value = '';
     //io.emit("queryRoom", msg)
   })
 
   socket.on('queryRoom', (args) => {
-   
-    
-    const {sender,content,orderId} = args;
+
+
+    const { sender, content, orderId } = args;
     let div = document.createElement('div');
-    div.innerHTML = `<b>${sender}r</b>` +": "+content;
+    div.innerHTML = `<b>${sender}r</b>` + ": " + content + currentTime;
 
     list.append(div);
   })
