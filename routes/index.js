@@ -85,6 +85,8 @@ router.get("/products/addProducts", function(req, res, next) {
     res.render("shop/addProduct");
 });
 
+router.get("/products", productController.get_all_prodcuts);
+
 router.get("/cart/updateQuantity", checkAuth, userController.update_quantity);
 
 router.post("/add_to_cart", checkAuth, userController.add_to_cart);
@@ -112,6 +114,5 @@ router.get(
 router.get("/chat/:orderId", checkAuth, orderController.chat);
 
 //router.get('chat/details', orderController.get_chat_deatils)
-
 
 module.exports = router;

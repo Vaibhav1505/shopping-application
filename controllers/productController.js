@@ -31,3 +31,15 @@ exports.get_product_detail = function(req, res, next) {
             res.render("error", { error: e });
         });
 };
+
+exports.get_all_prodcuts = function(req, res, next) {
+    Product.find()
+        .then((result) => {
+            res.json({
+                resultData: result,
+            });
+        })
+        .catch((e) => {
+            console.log("Error" + e);
+        });
+};
